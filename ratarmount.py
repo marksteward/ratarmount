@@ -886,7 +886,6 @@ class SQLiteIndexedTar:
             except tarfile.ReadError as e:
                 if oldOffset is not None:
                     fileobj.seek( oldOffset )
-                pass
 
             try:
                 if compression == 'bz2':
@@ -897,7 +896,8 @@ class SQLiteIndexedTar:
                     gzip.open( fileobj if fileobj else name ).read( 1 )
                     return isTar, compression
             except:
-                pass
+                if oldOffset is not None:
+                    fileobj.seek( oldOffset )
 
         raise Exception( "File '{}' does not seem to be a valid TAR file!".format( name ) )
 
